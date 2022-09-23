@@ -26,7 +26,7 @@ public class App {
 
         Context ctx = app.addContext("", new File(".").getAbsolutePath());
 
-        app.addServlet(ctx, UploadServlet.class.getSimpleName(), new UploadServlet());
+        Tomcat.addServlet(ctx, UploadServlet.class.getSimpleName(), new UploadServlet());
         ctx.addServletMappingDecoded("/upload", UploadServlet.class.getSimpleName());
 
         return app;

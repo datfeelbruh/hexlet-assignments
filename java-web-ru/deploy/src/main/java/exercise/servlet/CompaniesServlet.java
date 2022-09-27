@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import static exercise.Data.getCompanies;
 
 public class CompaniesServlet extends HttpServlet {
@@ -23,16 +22,14 @@ public class CompaniesServlet extends HttpServlet {
         // BEGIN
         PrintWriter out = response.getWriter();
         if (request.getQueryString() == null || request.getQueryString().endsWith("=")) {
-            out.println(getCompanies());
+            getCompanies().forEach(out::println);
         } else {
             List<String> companies = getCompanies().stream()
-                    .filter(e -> e.contains(request.getParameter("search")))
-                    .collect(Collectors.toList());
+                    .filter(e -> e.contains(request.getParameter("search"))).toList();
             if (companies.size() == 0) {
                 out.println("Companies not found");
-            } else {
-                out.println(companies);
             }
+            companies.forEach(out::println);
         }
         // END
     }

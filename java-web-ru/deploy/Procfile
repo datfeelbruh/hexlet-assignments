@@ -1,1 +1,1 @@
-web: sh build/install/deploy/bin/deploy
+web: sh hexlet-assignments/java-web-ru/deploy/build/install/deploy/bin/deploy

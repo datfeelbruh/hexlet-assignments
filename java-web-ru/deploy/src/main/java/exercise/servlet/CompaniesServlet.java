@@ -21,16 +21,19 @@ public class CompaniesServlet extends HttpServlet {
 
         // BEGIN
         PrintWriter out = response.getWriter();
-        if (request.getQueryString() == null || request.getQueryString().endsWith("=")) {
-            getCompanies().forEach(out::println);
-        } else {
-            List<String> companies = getCompanies().stream()
-                    .filter(e -> e.contains(request.getParameter("search"))).toList();
-            if (companies.size() == 0) {
-                out.println("Companies not found");
-            }
-            companies.forEach(out::println);
+        List<String> companies= getCompanies();
+        String searchValue = request.getParameter("search") == null
+                ? ""
+                : request.getParameter("search");
+
+        List<String> filtered = companies
+                .stream()
+                .filter(e -> e.contains(searchValue)).toList();
+        if (filtered.isEmpty()) {
+            out.println("Companies not found");
+            return;
         }
+        filtered.forEach(out::println);
         // END
     }
 }

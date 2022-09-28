@@ -64,7 +64,8 @@ public class UsersServlet extends HttpServlet {
                     <head>
                         <meta charset="UTF-8">
                         <title>Example application | Users</title>
-                        <link rel="stylesheet" href="mysite.css">
+                        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+                        
                     </head>
                     <body>
                         <table>
@@ -111,7 +112,8 @@ public class UsersServlet extends HttpServlet {
                     <head>
                         <meta charset="UTF-8">
                         <title>Example application | Users</title>
-                        <link rel="stylesheet" href="mysite.css">
+                        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+                       
                     </head>
                     <body>
                         <table>
@@ -135,7 +137,7 @@ public class UsersServlet extends HttpServlet {
                     .append(searchResult.get("email"))
                     .append("</td></tr>");
         } else {
-            response.sendError(404, "Not found");
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Not found");
             return;
         }
 

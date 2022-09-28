@@ -16,7 +16,6 @@ import java.nio.file.Path;
 import java.nio.file.Files;
 import java.util.Objects;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.lang3.ArrayUtils;
@@ -44,9 +43,9 @@ public class UsersServlet extends HttpServlet {
     private List getUsers() throws JsonProcessingException, IOException {
         // BEGIN
         ObjectMapper objectMapper = new ObjectMapper();
-        Path usersPath = Paths.get("/home/sobad/Hexlet/hexlet-assignments/java-web-ru/html/src/main/resources/users.json");
+        Path usersPath = Paths.get("src", "main", "resources", "users.json").toAbsolutePath().normalize();
         String usersContent = Files.readString(usersPath);
-        return objectMapper.readValue(usersContent, new TypeReference<>(){});
+        return objectMapper.readValue(usersContent, List.class);
         // END
     }
 
@@ -56,7 +55,6 @@ public class UsersServlet extends HttpServlet {
 
         // BEGIN
         List<Map<String, String>> users = getUsers();
-        PrintWriter out = response.getWriter();
         StringBuilder body = new StringBuilder();
         body.append("""
                 <!DOCTYPE html>
@@ -64,34 +62,34 @@ public class UsersServlet extends HttpServlet {
                     <head>
                         <meta charset="UTF-8">
                         <title>Example application | Users</title>
-                        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-                        
+                        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+                                    rel="stylesheet" 
+                                    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+                                    crossorigin="anonymous">
                     </head>
                     <body>
-                        <table>
+                        <div class=\"container\">
+                            <a href=\"/\">Главная</a>
+                            <table>
                 """);
+
         for (Map<String, String> user : users) {
+            String id = user.get("id");
+            String fullname = user.get("firstName") + " " + user.get("lastName");
             body.append("<tr>");
-            body.append("<td>")
-                    .append(user.get("id"))
-                    .append("</td>")
-                    .append("<td>" + "<a href=/users/")
-                    .append(user.get("id"))
-                    .append(">")
-                    .append(user.get("firstName"))
-                    .append(" ")
-                    .append(user.get("lastName"))
-                    .append("</a>")
-                    .append("</td>");
+            body.append("<td>" + id + "</td>");
+            body.append("<td><a href=\"/users/" + id + "\">" + fullname + "</a>" + "</td>");
             body.append("</tr>");
         }
 
-
         body.append("""
                         </table>
-                    </body>
-                </html>
-                """);
+                    </div>
+                </body>
+            </html>
+            """);
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
         out.println(body);
         // END
     }
@@ -103,49 +101,46 @@ public class UsersServlet extends HttpServlet {
 
         // BEGIN
         List<Map<String, String>> users = getUsers();
-        PrintWriter out = response.getWriter();
-        Map<String, String> searchResult = new HashMap<>();
+        Map<String, String> user = users
+                .stream()
+                .filter(usr -> usr.get("id").equals(id))
+                .findAny()
+                .orElse(null);
+        if (user == null) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
         StringBuilder body = new StringBuilder();
         body.append("""
-                <!DOCTYPE html>
-                <html lang="ru">
-                    <head>
-                        <meta charset="UTF-8">
-                        <title>Example application | Users</title>
-                        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-                       
-                    </head>
-                    <body>
-                        <table>
-                """);
-        for (Map<String, String> user : users) {
-            if (Objects.equals(user.get("id"), id)) {
-                searchResult = user;
-            }
-        }
-        if (!searchResult.isEmpty()) {
-            body.append("<tr><td>")
-                    .append(searchResult.get("id"))
-                    .append("</td></tr>")
-                    .append("<tr><td>")
-                    .append(searchResult.get("firstName"))
-                    .append("</td></tr>")
-                    .append("<tr><td>")
-                    .append(searchResult.get("lastName"))
-                    .append("</td></tr>")
-                    .append("<tr><td>")
-                    .append(searchResult.get("email"))
-                    .append("</td></tr>");
-        } else {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Not found");
-            return;
+            <!DOCTYPE html>
+            <html lang="ru">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Example application | Users</title>
+                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+                                rel="stylesheet"
+                                integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+                                crossorigin="anonymous">
+                   
+                </head>
+                <body>
+                    <div class=\"container\">
+                        <a href=\"/users\">Пользователи</a>
+            """);
+        for (Map.Entry<String, String> entry : user.entrySet()) {
+            body.append("<div>");
+            body.append(entry.getKey() + ": " + entry.getValue() + " ");
+            body.append("</div");
         }
 
         body.append("""
-                        </table>
-                    </body>
-                </html>
-                """);
+                    </div>
+                </table>
+            </body>
+        </html>
+        """);
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
         out.println(body);
         // END
     }

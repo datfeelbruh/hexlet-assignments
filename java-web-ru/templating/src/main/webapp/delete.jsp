@@ -12,15 +12,8 @@
             crossorigin="anonymous">
     </head>
     <body>
-        <c:forEach var="entry" items="${user}">
-            <div>
-                <c:out value="${entry.key}"/>
-                :
-                <c:out value="${entry.value}"/>
-            </div>
-        </c:forEach>
         <div>
-            <p>Вы действительно хотите удалить пользователя?</p>
+            <p>Вы действительно хотите удалить пользователя ${user.get("firstName")} ${user.get("lastName")} ?</p>
         </div>
         <form action='/users/delete?id=${user.get("id")}' method="post">
             <button type="submit" class="btn btn-danger">Удалить</button>

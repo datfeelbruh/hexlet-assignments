@@ -1,7 +1,6 @@
 package exercise;
 
 import org.apache.catalina.LifecycleException;
-import org.apache.catalina.User;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.catalina.Context;
 import java.io.File;

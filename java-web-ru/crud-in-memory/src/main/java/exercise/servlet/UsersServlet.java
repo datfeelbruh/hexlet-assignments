@@ -202,17 +202,22 @@ public class UsersServlet extends HttpServlet {
         }
 
         // BEGIN
+        Map<String, String> updated = new HashMap<>();
+
+        updated.put("id", id);
+        updated.put("firstName", request.getParameter("firstName"));
+        updated.put("lastName", request.getParameter("lastName"));
+        updated.put("email", request.getParameter("email"));
+
         if (request.getParameter("firstName").isEmpty() || request.getParameter("lastName").isEmpty()) {
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/edit.jsp");
-            request.setAttribute("user", user);
+            request.setAttribute("user", updated);
             request.setAttribute("error", "Имя и Фамилия не могут быть пустыми");
             response.setStatus(422);
             requestDispatcher.forward(request, response);
             return;
         }
-        user.put("firstName", request.getParameter("firstName"));
-        user.put("lastName", request.getParameter("lastName"));
-        user.put("email", request.getParameter("email"));
+        user.putAll(updated);
         response.sendRedirect("/users/show?id=" + user.get("id"));
         // END
     }

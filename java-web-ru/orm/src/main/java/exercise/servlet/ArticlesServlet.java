@@ -118,8 +118,7 @@ public class ArticlesServlet extends HttpServlet {
                     throws IOException, ServletException {
 
         // BEGIN
-        List<Category> categories = new QCategory()
-                .orderBy().id.asc().findList();
+        List<Category> categories = new QCategory().findList();
         request.setAttribute("categories", categories);
         // END
         TemplateEngineUtil.render("articles/new.html", request, response);

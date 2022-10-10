@@ -12,7 +12,7 @@ layout:decorate="~{layouts/application.html}">
       <li class="list-group-item" th:text="*{title}"></li>
       <li class="list-group-item" th:text="*{body}"></li>
       <!-- BEGIN -->
-      <li class="list-group-item" th:text="*{category.getName()}"></li>
+      <li class="list-group-item" th:text="'Категория: ' + *{getCategory().getName()}"></li>
       <!-- END -->
     </ul>
   </div>

@@ -62,15 +62,16 @@ public class ArticlesServlet extends HttpServlet {
         ServletContext context = request.getServletContext();
         Connection connection = (Connection) context.getAttribute("dbConnection");
         // BEGIN
+        int articlesPerPage = 10;
         String page = request.getParameter("page");
-        int currentPage = (page == null || Integer.parseInt(page) < 2) ? 1 : Integer.parseInt(page);
-        int offset = (currentPage - 1) * 10;
+        int currentPage = page == null ? 1 : Integer.parseInt(page);
+        int offset = (currentPage - 1) * articlesPerPage;
         List<Map<String, String>> articles = new ArrayList<>();
         String query = "SELECT id, title, body FROM articles ORDER BY id LIMIT ? OFFSET ?";
 
         try {
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, 10);
+            statement.setInt(1, articlesPerPage);
             statement.setInt(2, offset);
             ResultSet resultSet = statement.executeQuery();
 
@@ -99,25 +100,28 @@ public class ArticlesServlet extends HttpServlet {
         ServletContext context = request.getServletContext();
         Connection connection = (Connection) context.getAttribute("dbConnection");
         // BEGIN
+        String id = getId(request);
         Map<String, String> article = new HashMap<>();
-        String query = "SELECT title, body FROM articles WHERE id = " + getId(request);
+        String query = "SELECT title, body FROM articles WHERE id = ?";
 
         try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, id);
+            ResultSet resultSet = statement.executeQuery();
 
-            while (resultSet.next()) {
-                article.put("title", resultSet.getString("title"));
-                article.put("body", resultSet.getString("body"));
+            if(!resultSet.first()) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
             }
+
+            article.put("title", resultSet.getString("title"));
+            article.put("body", resultSet.getString("body"));
+
         } catch (SQLException e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             return;
         }
-        if (article.isEmpty()) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            return;
-        }
+
         request.setAttribute("article", article);
         // END
         TemplateEngineUtil.render("articles/show.html", request, response);

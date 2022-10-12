@@ -65,13 +65,12 @@ public final class ArticleController {
 
     public static Handler editArticle = ctx -> {
         // BEGIN
-        List<Category> categories = new QCategory()
-                .orderBy().id.asc().findList();
-        ctx.attribute("categories", categories);
-
         long id = ctx.pathParamAsClass("id", Long.class).getOrDefault(null);
         Article article = new QArticle()
                 .id.eq(id).findOne();
+        List<Category> categories = new QCategory().findList();
+
+        ctx.attribute("categories", categories);
         ctx.attribute("article", article);
         ctx.render("articles/edit.html");
         // END
@@ -80,16 +79,18 @@ public final class ArticleController {
     public static Handler updateArticle = ctx -> {
         // BEGIN
         long id = ctx.pathParamAsClass("id", Long.class).getOrDefault(null);
-
+        String title = ctx.formParam("title");
+        String body = ctx.formParam("body");
         int categoryId = ctx.formParamAsClass("categoryId", Integer.class).getOrDefault(null);
 
         new QArticle()
                 .id.eq(id)
                 .asUpdate()
-                .set("title", ctx.formParam("title"))
-                .set("body", ctx.formParam("body"))
-                .set("category_id", ctx.formParam("categoryId"))
+                .set("title", title)
+                .set("body", body)
+                .set("category", categoryId)
                 .update();
+
         ctx.sessionAttribute("flash", "Статья успешно изменена");
         ctx.redirect("/articles");
         // END

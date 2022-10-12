@@ -53,11 +53,17 @@ public final class App {
                 get(ArticleController.listArticles);
                 get("new", ArticleController.newArticle);
                 post(ArticleController.createArticle);
-                get("{id}", ArticleController.showArticle);
-                get("{id}/edit", ArticleController.editArticle);
-                post("{id}/edit", ArticleController.updateArticle);
-                get("{id}/delete", ArticleController.deleteArticle);
-                post("{id}/delete", ArticleController.destroyArticle);
+                path("{id}", () -> {
+                    get(ArticleController.showArticle);
+                    path("edit", () -> {
+                        get(ArticleController.editArticle);
+                        post(ArticleController.updateArticle);
+                    });
+                    path("delete", () -> {
+                        get(ArticleController.deleteArticle);
+                        post(ArticleController.destroyArticle);
+                    });
+                });
             });
         });
         // END

@@ -1,8 +1,8 @@
 FROM gradle:7.4.0-jdk17
 
-WORKDIR /intro-to-spring
+WORKDIR /app
 
-COPY /intro-to-spring .
+COPY /app .
 
 RUN gradle installDist
 

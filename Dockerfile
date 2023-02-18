@@ -6,4 +6,4 @@ COPY /java-spring-ru/authentication .
 
 RUN gradle installDist
 
-CMD ./build/install/intro-to-spring/bin/authentication
+CMD ./build/install/authentication/bin/authentication

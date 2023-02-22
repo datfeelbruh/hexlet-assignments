@@ -1,9 +1,9 @@
 FROM gradle:7.4.0-jdk17
 
-WORKDIR /java-spring-ru/authentication
+WORKDIR /java-spring-ru/authorization
 
-COPY /java-spring-ru/authentication .
+COPY /java-spring-ru/authorization .
 
 RUN gradle installDist
 
-CMD ./build/install/authentication/bin/authentication
+CMD ./build/install/authorization/bin/authorization

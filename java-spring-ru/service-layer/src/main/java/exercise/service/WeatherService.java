@@ -27,7 +27,7 @@ public class WeatherService {
     }
 
     // BEGIN
-    public Map<String, String> getWeather(Long id) {
+    public Map<String, Object> getWeather(Long id) {
         City city = cityRepository.findById(id)
                 .orElseThrow(() -> new CityNotFoundException("City not found"));
 

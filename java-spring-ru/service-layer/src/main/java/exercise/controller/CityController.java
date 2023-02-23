@@ -1,5 +1,4 @@
 package exercise.controller;
-import exercise.CityNotFoundException;
 import exercise.model.City;
 import exercise.repository.CityRepository;
 import exercise.service.WeatherService;
@@ -28,12 +27,12 @@ public class CityController {
 
     // BEGIN
     @GetMapping("/cities/{id}")
-    public Map<String, String> getCityWeather(@PathVariable Long id) {
+    public Map<String, Object> getCityWeather(@PathVariable Long id) {
         return weatherService.getWeather(id);
     }
 
     @GetMapping("/search")
-    public List<Map<String, String>> getListCitiesAndTemperatures(
+    public List<Map<String, Object>> getListCitiesAndTemperatures(
             @RequestParam(name = "name", required = false) String prefix)
     {
        List<City> cities = prefix == null ?
@@ -42,13 +41,12 @@ public class CityController {
 
        return cities.stream()
                .map(city -> {
-                   Map<String, String> weather = weatherService.getWeather(city.getId());
-                   Map<String, String> citiesAndTemperatures = new HashMap<>();
-                   citiesAndTemperatures.put("temperature", weather.get("temperature"));
-                   citiesAndTemperatures.put("name", weather.get("name"));
-                   return citiesAndTemperatures;
+                   Map<String, Object> weather = weatherService.getWeather(city.getId());
+                   return Map.of(
+                           "name", city.getName(),
+                           "temperature", weather.get("temperature")
+                   );
                })
-               .sorted(Comparator.comparing(e -> e.get("name")))
                .collect(Collectors.toList());
     }
     // END

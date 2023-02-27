@@ -14,7 +14,7 @@ public class WelcomeController {
     @Autowired
     Daytime daytime;
 
-    @GetMapping
+    @GetMapping(path = "/daytime")
     public String getDaytime() {
         String time = daytime.getName();
         return "It is " + time + " now. Enjoy your " + meal.getMealForDaytime(time);

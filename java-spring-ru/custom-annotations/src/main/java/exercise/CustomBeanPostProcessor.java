@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 // BEGIN
 @Component
 public class CustomBeanPostProcessor implements BeanPostProcessor {
-    public static final Logger LOGGER = LoggerFactory.getLogger(CustomBeanPostProcessor.class);
+    public static final Logger MYLOGGER = LoggerFactory.getLogger(CustomBeanPostProcessor.class);
     private final Map<String, Class> annotatedBeans = new HashMap<>();
     private final Map<String, String> logLevels = new HashMap<>();
     @Override
@@ -46,9 +46,9 @@ public class CustomBeanPostProcessor implements BeanPostProcessor {
                         );
                         String logLevel = logLevels.get(beanName);
                         if (logLevel.equals("info")) {
-                            LOGGER.info(message);
+                            MYLOGGER.info(message);
                         } else {
-                            LOGGER.debug(message);
+                            MYLOGGER.debug(message);
                         }
                         return method.invoke(bean, args);
                     }

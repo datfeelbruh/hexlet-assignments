@@ -50,7 +50,7 @@ public final class App {
         // BEGIN
         app.routes(() -> {
             path("articles", () -> {
-                get(ArticleController.listArticles);
+                get
                 get("new", ArticleController.newArticle);
                 post(ArticleController.createArticle);
                 path("{id}", () -> {

@@ -35,10 +35,9 @@ public class CourseController {
     // BEGIN
     @GetMapping(path = "/{id}/previous")
     public List<Optional<Course>> getPreviousCourses(@PathVariable long id) {
-        Course course = courseRepository.findById(id);
-        String path = course.getPath();
+        String path = courseRepository.findById(id).getPath();
         if (path != null) {
-            return Arrays.stream(course.getPath().split("\\."))
+            return Arrays.stream(path.split("\\."))
                     .map(Long::parseLong)
                     .map(courseRepository::findById)
                     .toList();

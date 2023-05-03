@@ -5,6 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dec52575-063c-441b-90c2-9b748d9dc6a2" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../../.idea/hexlet-assignments.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/java-spring-ru.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../java-web-ru/.idea/java-web-ru.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../intro-to-spring/Dockerfile" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../migrations/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../migrations/.idea/gradle.xml" afterDir="false" />
@@ -84,7 +87,8 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "/home/sobad"
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "last_opened_file_path": "/home/sobad/Hexlet/hexlet-assignments/java-spring-ru/finite-state-machine"
   }
 }]]></component>
   <component name="RunManager">

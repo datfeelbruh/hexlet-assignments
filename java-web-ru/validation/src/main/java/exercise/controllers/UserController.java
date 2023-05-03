@@ -52,8 +52,6 @@ public final class UserController {
         String email = ctx.formParam("email");
         String password = ctx.formParam("password");
 
-        User user = new User(firstName, lastName, email, password);
-
         Validator<String> firstNameValidator = ctx.formParamAsClass("firstName", String.class)
                 .check(x -> !x.isEmpty(), "Имя не должно быть пустым");
 
@@ -80,13 +78,16 @@ public final class UserController {
         if (!errors.isEmpty()) {
             ctx.status(422);
             ctx.attribute("errors", errors);
-            ctx.attribute("user", user);
+            User invalidUser = new User(firstName, lastName, email, password);
+            ctx.attribute("user", invalidUser);
             ctx.sessionAttribute("flash", "Некорректные данные для пользователя");
             ctx.render("users/new.html");
             return;
         }
 
+        User user = new User(firstName, lastName, email, password);
         user.save();
+
         ctx.sessionAttribute("flash", "Пользователь успешно создан");
         ctx.redirect("/users");
         // END

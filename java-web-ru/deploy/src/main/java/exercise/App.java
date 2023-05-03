@@ -30,8 +30,7 @@ public class App {
         ctx.addServletMappingDecoded("", WelcomeServlet.class.getSimpleName());
 
         // BEGIN
-        app.addServlet(ctx, CompaniesServlet.class.getSimpleName(), new CompaniesServlet());
-        ctx.addServletMappingDecoded("/companies", CompaniesServlet.class.getSimpleName());
+        
         // END
 
         return app;

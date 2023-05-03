@@ -52,10 +52,6 @@ class App {
         });
     }
 
-//    public static CompletableFuture<Long> getDirectorySize(String dirName) {
-//
-//    }
-    // END
 
     public static void main(String[] args) throws Exception {
         // BEGIN
